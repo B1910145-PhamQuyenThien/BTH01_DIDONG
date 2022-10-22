@@ -18,6 +18,13 @@ class ProductGirdTile extends StatelessWidget {
       child: GridTile(
         footer: buildGridFooterBar(context),
         child: GestureDetector(
+          /* onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (ctx) => ProductDetailScreen(product),
+              ),
+            );
+          }, */
           onTap: () {
             Navigator.of(context).pushNamed(
               ProductDetailScreen.routeName,
@@ -36,7 +43,21 @@ class ProductGirdTile extends StatelessWidget {
   Widget buildGridFooterBar(BuildContext context) {
     return GridTileBar(
       backgroundColor: Colors.black87,
-      leading: IconButton(
+      leading: ValueListenableBuilder<bool>(
+        valueListenable: product.isFavoriteListenable,
+        builder: (ctx, isFavorite, child) {
+          return IconButton(
+            icon: Icon(
+              isFavorite ? Icons.favorite : Icons.favorite_border,
+            ),
+            color: Theme.of(context).colorScheme.secondary,
+            onPressed: () {
+              product.isFavorite = !isFavorite;
+            },
+          );
+        },
+      ),
+      /* leading: IconButton(
         icon: Icon(
           product.isFavorite ? Icons.favorite : Icons.favorite_border,
         ),
@@ -57,7 +78,7 @@ class ProductGirdTile extends StatelessWidget {
           print('Add item to cart');
         },
         color: Theme.of(context).colorScheme.secondary,
-      ),
+      ), */
     );
   }
 }
